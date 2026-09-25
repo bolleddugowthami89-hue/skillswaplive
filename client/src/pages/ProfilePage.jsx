@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { 
-  Star, 
-  MapPin, 
-  Globe, 
-  Calendar, 
-  Repeat, 
-  MessageSquare, 
-  Sparkles, 
-  CheckCircle2, 
+import {
+  Star,
+  MapPin,
+  Globe,
+  Calendar,
+  Repeat,
+  MessageSquare,
+  Sparkles,
+  CheckCircle2,
   ExternalLink,
   Share2,
-  Clock, 
+  Clock,
   ShieldCheck,
   Edit3
 } from 'lucide-react';
@@ -75,14 +75,14 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-[#0b0f19] text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        
+
         {/* Profile Header Banner Card */}
         <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 relative overflow-hidden">
           {/* Ambient header glow */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-            
+
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
               <div className="relative">
                 <img
@@ -90,9 +90,8 @@ const ProfilePage = () => {
                   alt={profileUser.name}
                   className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover ring-4 ring-indigo-500/30"
                 />
-                <span className={`w-4 h-4 rounded-full absolute bottom-1 right-1 ring-2 ring-slate-900 ${
-                  profileUser.isOnline ? 'bg-emerald-400 live-pulse' : 'bg-slate-600'
-                }`} />
+                <span className={`w-4 h-4 rounded-full absolute bottom-1 right-1 ring-2 ring-slate-900 ${profileUser.isOnline ? 'bg-emerald-400 live-pulse' : 'bg-slate-600'
+                  }`} />
               </div>
 
               <div>
@@ -102,9 +101,9 @@ const ProfilePage = () => {
                   </h1>
                   <ShieldCheck className="w-5 h-5 text-indigo-400" />
                 </div>
-                
+
                 <p className="text-sm font-medium text-indigo-300 mt-0.5">{profileUser.title}</p>
-                
+
                 <div className="flex flex-wrap items-center gap-4 mt-2 text-xs text-slate-400">
                   <span className="flex items-center gap-1 text-amber-400 font-bold">
                     <Star className="w-3.5 h-3.5 fill-amber-400" />
@@ -177,10 +176,10 @@ const ProfilePage = () => {
 
         {/* Content Grid: 2 Columns */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Left Column: About & Skills */}
           <div className="lg:col-span-2 space-y-6">
-            
+
             {/* Bio */}
             <div className="glass-card rounded-2xl p-6 border border-slate-800">
               <h2 className="text-base font-bold font-['Outfit'] text-white mb-3">About Me</h2>
@@ -290,7 +289,7 @@ const ProfilePage = () => {
 
           {/* Right Column: Availability & Links */}
           <div className="space-y-6">
-            
+
             {/* Availability Schedule */}
             <div className="glass-card rounded-2xl p-6 border border-slate-800 space-y-4">
               <h2 className="text-sm font-bold font-['Outfit'] text-white flex items-center gap-2">
