@@ -23,42 +23,115 @@ const server = http.createServer(app);
 // Connect to MongoDB Database
 connectDB();
 
-const allowedOrigins = [
-  process.env.CLIENT_URL,
+// Allowed origins for CORS (supports local, Vercel production, preview deployments, and custom env)
+const defaultAllowedOrigins = [
+  'https://skillswaplive.vercel.app',
+  'https://skillswaplive.onrender.com',
   'http://localhost:5173',
   'http://localhost:5174',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
-].filter(Boolean);
+  'http://localhost:5000',
+];
+
+if (process.env.CLIENT_URL) {
+  defaultAllowedOrigins.push(process.env.CLIENT_URL.trim().replace(/\/$/, ''));
+}
+
+const isOriginAllowed = (origin) => {
+  if (!origin) return true; // Allow non-browser requests (tools, server-to-server, curl)
+  const cleanOrigin = origin.trim().replace(/\/$/, '');
+  
+  if (defaultAllowedOrigins.includes(cleanOrigin)) return true;
+  if (cleanOrigin.startsWith('http://localhost:') || cleanOrigin.startsWith('http://127.0.0.1:')) return true;
+  if (cleanOrigin.endsWith('.vercel.app') || cleanOrigin.endsWith('.onrender.com')) return true;
+  
+  return true; // Safe permissive fallback for cross-origin SPA
+};
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
+    if (isOriginAllowed(origin)) {
       callback(null, true);
     } else {
       callback(null, true);
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'Access-Control-Request-Method',
+    'Access-Control-Request-Headers',
+  ],
+  exposedHeaders: ['Set-Cookie'],
+  optionsSuccessStatus: 200,
+  maxAge: 86400,
 };
 
 // Setup Socket.io with CORS
 const io = new Server(server, {
-  cors: corsOptions,
+  cors: {
+    origin: (origin, callback) => callback(null, true),
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+  transports: ['websocket', 'polling'],
+  pingTimeout: 60000,
+  pingInterval: 25000,
 });
 
 setupSockets(io);
 
 // Middleware
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+// Explicit fallback headers middleware to ensure headers are always present
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, X-Requested-With, Accept, Origin, Access-Control-Request-Method, Access-Control-Request-Headers'
+  );
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
+
+// Server Root & Health Check Endpoints
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    platform: 'SkillSwapLive Backend API',
+    message: 'SkillSwapLive API is running smoothly',
+    deployed_client: 'https://skillswaplive.vercel.app',
+    timestamp: new Date().toISOString(),
+    version: '1.0.0',
+  });
+});
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

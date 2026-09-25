@@ -10,17 +10,32 @@ export const SocketProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState(new Set());
   const [incomingNotification, setIncomingNotification] = useState(null);
   useEffect(() => {
-    const envSocketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL;
-    const socketUrl = envSocketUrl
-      ? envSocketUrl.replace(/\/api\/?$/, '')
-      : (window.location.port === '5173' || window.location.port === '5174'
-          ? 'http://localhost:5000'
-          : window.location.origin);
+    const getSocketServerUrl = () => {
+      const envSocketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL;
+      if (envSocketUrl && envSocketUrl.trim() !== '') {
+        return envSocketUrl.trim().replace(/\/api\/?$/, '').replace(/\/$/, '');
+      }
+
+      if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          return 'http://localhost:5000';
+        }
+        return 'https://skillswaplive.onrender.com';
+      }
+
+      return 'https://skillswaplive.onrender.com';
+    };
+
+    const socketUrl = getSocketServerUrl();
     const socketInstance = io(socketUrl, {
       path: '/socket.io',
       transports: ['websocket', 'polling'],
       autoConnect: true,
       withCredentials: true,
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000,
     });
 
     setSocket(socketInstance);

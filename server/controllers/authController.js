@@ -2,8 +2,12 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 // Helper to generate JWT Token
+const getJwtSecret = () => {
+  return (process.env.JWT_SECRET || 'skillswap_live_super_secret_jwt_key_2026_secure').trim();
+};
+
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'skillswap_live_super_secret_jwt_key_2026_secure', {
+  return jwt.sign({ id }, getJwtSecret(), {
     expiresIn: process.env.JWT_EXPIRE || '30d',
   });
 };
