@@ -15,6 +15,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import ThemeSwitcher from './ThemeSwitcher';
 import api from '../services/api';
 
 const Navbar = () => {
@@ -148,7 +149,9 @@ const Navbar = () => {
           </nav>
 
           {/* Right Action / Auth Controls */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2.5">
+            <ThemeSwitcher />
+
             {!user ? (
               <>
                 <button
@@ -164,7 +167,7 @@ const Navbar = () => {
 
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors"
+                  className="px-3.5 py-1.5 text-sm font-medium text-slate-300 hover:text-white transition-colors"
                 >
                   Sign In
                 </Link>
@@ -314,6 +317,7 @@ const Navbar = () => {
                 )}
               </button>
             )}
+            <ThemeSwitcher />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
@@ -327,13 +331,20 @@ const Navbar = () => {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-800 bg-[#0b0f19] px-4 pt-3 pb-6 space-y-3">
+        <div className="md:hidden border-t border-slate-800 bg-[var(--color-bg)] px-4 pt-3 pb-6 space-y-3">
           <Link
             to="/explore"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-slate-800"
           >
             Explore Skills
+          </Link>
+          <Link
+            to="/kage"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-lg text-base font-medium text-indigo-400 hover:bg-indigo-950/30"
+          >
+            ⛩️ Zen 3D Showcase (Kage)
           </Link>
           {user ? (
             <>
