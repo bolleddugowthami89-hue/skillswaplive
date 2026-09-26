@@ -15,6 +15,7 @@ import LiveRoomPage from './pages/LiveRoomPage';
 import MessagesPage from './pages/MessagesPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import { Scene } from './components/Scene';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -35,18 +36,19 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Layout wrapper to hide footer on live classroom
+// Layout wrapper to hide footer on live classroom or standalone shader frame
 const AppLayout = () => {
   const location = useLocation();
-  const isLiveRoom = location.pathname.startsWith('/live');
+  const isSpecialPage = location.pathname.startsWith('/live') || location.pathname.startsWith('/kage');
 
   return (
     <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
-      <Navbar />
+      {!location.pathname.startsWith('/kage') && <Navbar />}
       
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/kage" element={<Scene />} />
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -87,7 +89,7 @@ const AppLayout = () => {
         </Routes>
       </main>
 
-      {!isLiveRoom && <Footer />}
+      {!isSpecialPage && <Footer />}
     </div>
   );
 };
