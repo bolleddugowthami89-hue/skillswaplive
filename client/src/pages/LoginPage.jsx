@@ -57,6 +57,16 @@ const LoginPage = () => {
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#0b0f19] flex items-center justify-center p-4 selection:bg-indigo-500 selection:text-white relative overflow-hidden">
       
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <img 
+          src="/images/skillswap-hero-bg.jpg" 
+          alt="SkillSwap Backdrop" 
+          className="w-full h-full object-cover object-center opacity-20 mix-blend-screen scale-110 filter blur-[1px] brightness-90"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0b0f19]/90 via-[#0b0f19]/70 to-[#0b0f19]" />
+      </div>
+
       {/* Background ambient radial glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-indigo-600/15 via-purple-600/15 to-pink-500/10 rounded-full blur-[120px] pointer-events-none" />
 

@@ -68,6 +68,17 @@ const HomePage = () => {
       
       {/* Hero Section */}
       <section className="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
+        {/* Brand Background Image & Ambient Layering */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <img 
+            src="/images/skillswap-hero-bg.jpg" 
+            alt="SkillSwap Knowledge Network" 
+            className="w-full h-full object-cover object-center opacity-35 mix-blend-screen scale-105 filter brightness-110 contrast-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0b0f19]/90 via-[#0b0f19]/40 to-[#0b0f19]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-[#0b0f19]/50 to-[#0b0f19]" />
+        </div>
+
         {/* Background glow ambient effects */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-indigo-600/20 via-purple-600/20 to-pink-500/10 blur-[130px] pointer-events-none rounded-full" />
         

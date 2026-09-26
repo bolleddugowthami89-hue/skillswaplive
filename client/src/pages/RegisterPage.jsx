@@ -91,6 +91,16 @@ const RegisterPage = () => {
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#0b0f19] flex items-start sm:items-center justify-center p-4 sm:py-8 selection:bg-indigo-500 selection:text-white relative overflow-x-hidden overflow-y-auto">
       
+      {/* Background Image Layer */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <img 
+          src="/images/skillswap-hero-bg.jpg" 
+          alt="SkillSwap Backdrop" 
+          className="w-full h-full object-cover object-center opacity-20 mix-blend-screen scale-110 filter blur-[1px] brightness-90"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0b0f19]/90 via-[#0b0f19]/70 to-[#0b0f19]" />
+      </div>
+
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-purple-600/15 via-indigo-600/15 to-pink-500/10 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="w-full max-w-lg my-4 sm:my-0 rounded-3xl glass-panel border border-slate-700/80 shadow-2xl p-6 sm:p-8 relative z-10 space-y-6">
